@@ -1,0 +1,228 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#102d3a">
+  <title>深圳三天两夜｜广州出发自驾行程</title>
+  <style>
+    :root{--ink:#18333d;--muted:#647981;--paper:#f5f8f5;--white:#fff;--teal:#0e716a;--mint:#e1f4ec;--coral:#ee785d;--gold:#ffd36e;--line:#dbe7e3;--navy:#102d3a}
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{margin:0;background:var(--paper);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;line-height:1.65}
+    a{color:inherit}
+    .page{max-width:760px;margin:0 auto;padding:0 16px 40px}
+    .hero{margin:0 -16px 18px;padding:34px 23px 26px;background:radial-gradient(circle at 91% 12%,#3aa499 0 4%,transparent 4.5%),radial-gradient(circle at 85% 18%,#ee785d 0 2%,transparent 2.5%),linear-gradient(140deg,#102d3a,#145d5d 72%,#228175);color:#fff;border-radius:0 0 28px 28px;position:relative;overflow:hidden}
+    .hero:after{content:"";position:absolute;width:220px;height:220px;border:1px solid #ffffff30;border-radius:50%;right:-90px;bottom:-110px;box-shadow:0 0 0 22px #ffffff0b,0 0 0 44px #ffffff08}
+    .eyebrow{font-size:12px;letter-spacing:.15em;text-transform:uppercase;color:#b5e7d8;font-weight:700}
+    h1{font-size:31px;line-height:1.25;margin:8px 0 10px;letter-spacing:.01em}
+    .hero p{margin:0;color:#e1f4ec;font-size:15px;max-width:490px}
+    .chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:18px}
+    .chip{border:1px solid #ffffff52;border-radius:30px;padding:5px 11px;font-size:12px;color:#fff;background:#ffffff10}
+    .route-strip{display:flex;align-items:center;gap:10px;background:#ffffff16;border-radius:14px;padding:11px 13px;margin-top:19px;font-size:13px}
+    .route-strip b{color:var(--gold)}
+    .route-line{height:1px;flex:1;background:linear-gradient(90deg,#ffd36e,#b8eee1);position:relative}
+    .route-line:after{content:"";position:absolute;right:0;top:-3px;width:7px;height:7px;border-radius:50%;background:#b8eee1}
+    .section{margin:16px 0}
+    .section-title{display:flex;align-items:center;gap:9px;margin:24px 2px 12px;font-size:20px;line-height:1.3}
+    .section-title .dot{width:10px;height:10px;border-radius:50%;background:var(--coral);box-shadow:0 0 0 5px #ee785d1c}
+    .card{background:var(--white);border:1px solid #e7eeea;border-radius:19px;padding:17px 17px 16px;box-shadow:0 7px 22px #163b3710;margin:11px 0}
+    .day-head{display:flex;align-items:flex-start;gap:12px;margin-bottom:12px}
+    .day-no{flex:0 0 47px;height:47px;display:grid;place-items:center;background:var(--mint);color:var(--teal);border-radius:15px;font-size:13px;font-weight:800;line-height:1.15;text-align:center}
+    .day-head h3{font-size:18px;line-height:1.35;margin:1px 0 3px}
+    .day-head p{margin:0;color:var(--muted);font-size:13px}
+    .timeline{border-left:2px solid var(--line);margin:0 0 2px 7px;padding-left:17px}
+    .stop{position:relative;margin:13px 0 16px}
+    .stop:before{content:"";position:absolute;left:-24px;top:7px;width:10px;height:10px;border-radius:50%;background:var(--coral);border:2px solid #fff;box-shadow:0 0 0 1px var(--coral)}
+    .time{font-size:12px;color:var(--teal);font-weight:800;letter-spacing:.04em}
+    .stop h4{font-size:15px;margin:1px 0 3px}
+    .stop p{font-size:13px;color:#526970;margin:0}
+    .note{padding:12px 13px;border-radius:13px;background:#fff6df;color:#695329;font-size:13px;margin-top:12px}
+    .note strong{color:#593f13}
+    .two-col{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+    .mini{background:#f2f8f5;border-radius:14px;padding:12px}
+    .mini b{display:block;font-size:13px;margin-bottom:3px;color:var(--teal)}
+    .mini span{font-size:12px;color:#587077}
+    .budget-total{background:linear-gradient(135deg,#e1f4ec,#f5fbf7);border:1px solid #cbe7da;border-radius:16px;padding:15px;margin-bottom:12px}
+    .budget-total .label{font-size:12px;color:#55736d}
+    .budget-total strong{display:block;font-size:27px;line-height:1.25;color:var(--teal);margin:3px 0}
+    .budget-total span{font-size:12px;color:#587077}
+    .costgrid{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+    .costitem{background:#f7faf8;border:1px solid #edf2ef;border-radius:13px;padding:11px}
+    .costitem b{display:block;color:var(--teal);font-size:13px}
+    .costitem strong{display:block;font-size:15px;margin:2px 0}
+    .costitem span{display:block;font-size:11px;color:#71858b}
+    .place{border-left:3px solid var(--teal);padding:1px 0 1px 12px;margin:13px 0}
+    .place b{display:block;font-size:14px}
+    .place p{font-size:13px;color:#526970;margin:3px 0 0}
+    .checklist{list-style:none;padding:0;margin:0}
+    .checklist li{position:relative;padding:9px 3px 9px 27px;border-bottom:1px solid #edf2ef;font-size:14px}
+    .checklist li:last-child{border-bottom:0}
+    .checklist li:before{content:"✓";position:absolute;left:0;top:10px;width:18px;height:18px;display:grid;place-items:center;border-radius:50%;background:var(--mint);color:var(--teal);font-size:12px;font-weight:900}
+    .traffic{background:var(--navy);color:#f4fbf8;border-radius:19px;padding:18px;margin:12px 0}
+    .traffic h3{margin:0 0 9px;font-size:17px;color:#b9f0df}
+    .traffic p,.traffic li{font-size:13px;color:#e1ece8}
+    .traffic p{margin:6px 0}
+    .traffic ul{padding-left:20px;margin:7px 0}
+    .traffic strong{color:var(--gold)}
+    .btns{display:flex;flex-wrap:wrap;gap:9px;margin-top:13px}
+    .btn{display:inline-block;text-decoration:none;background:var(--teal);color:white;border-radius:30px;padding:9px 13px;font-size:13px;font-weight:700}
+    .btn.light{background:#e7f5ee;color:var(--teal)}
+    .source{font-size:12px;color:var(--muted);line-height:1.8}
+    .source a{color:var(--teal);text-decoration:none;border-bottom:1px solid #badbd2}
+    .small{font-size:11px;color:#71858b}
+    footer{text-align:center;padding:15px 0 0;color:#71858b;font-size:11px}
+    @media(min-width:600px){.page{padding-left:25px;padding-right:25px}.hero{margin-left:-25px;margin-right:-25px;padding:42px 34px 30px}h1{font-size:37px}.two-col{grid-template-columns:repeat(2,1fr)}}
+    @media print{body{background:white}.hero{print-color-adjust:exact;-webkit-print-color-adjust:exact}.card,.traffic{break-inside:avoid;box-shadow:none}.page{max-width:none}.btn{border:1px solid var(--teal)}}
+  </style>
+</head>
+<body>
+<main class="page">
+  <header class="hero">
+    <div class="eyebrow">Shenzhen · 3 days / 2 nights · Road trip</div>
+    <h1>深圳三天两夜<br>广州出发自驾游</h1>
+    <p>两天逛华侨城主题园，最后一天去前海滑雪；住在世界之窗旁边。</p>
+    <div class="chips"><span class="chip">🚗 广州出发</span><span class="chip">🌍 世界之窗</span><span class="chip">🎢 欢乐谷</span><span class="chip">❄️ 前海滑雪</span><span class="chip">🏨 益田威斯汀</span></div>
+    <div class="route-strip"><span>广州</span><span class="route-line"></span><b>南山 · 华侨城</b><span class="route-line"></span><b>宝安 · 前海滑雪</b><span class="route-line"></span><span>广州</span></div>
+  </header>
+
+  <section class="section">
+    <h2 class="section-title"><i class="dot"></i>行程一眼看懂</h2>
+    <div class="two-col">
+      <div class="mini"><b>第 1 天｜世界之窗</b><span>广州出发 → 下午/夜游 → 住南山</span></div>
+      <div class="mini"><b>第 2 天｜欢乐谷</b><span>整天游玩，不挪车 → 住南山</span></div>
+      <div class="mini"><b>第 3 天｜前海滑雪</b><span>退房 → 上午滑雪 → 午后回广州</span></div>
+      <div class="mini"><b>酒店位置</b><span>深圳益田威斯汀酒店，深南大道 9028-2 号</span></div>
+    </div>
+    <div class="note"><strong>路线顺序：</strong>第 1 天先到世界之窗，第 2 天玩欢乐谷，第 3 天从南山退房后去宝安前海冰雪世界，滑完直接回广州。三项都安排进三天会稍紧，冰雪场以预约时段为准。</div>
+  </section>
+
+  <section class="section">
+    <h2 class="section-title"><i class="dot"></i>费用参考｜两位成人</h2>
+    <div class="card">
+      <div class="budget-total"><span class="label">2 人合计参考 · 3 天 2 夜</span><strong>约 ¥4,500–9,300</strong><span>人均约 ¥2,250–4,650；主要差异来自酒店日期、雪票时段和旺季</span></div>
+      <div class="costgrid">
+        <div class="costitem"><b>酒店｜双人间 2 晚</b><strong>¥1,800–5,000</strong><span>约 ¥900–2,500 / 晚；节假日可能更高</span></div>
+        <div class="costitem"><b>门票｜两园各 1 天</b><strong>¥780–960</strong><span>欢乐谷约 ¥220–260；世界之窗约 ¥168–220 / 成人</span></div>
+        <div class="costitem"><b>前海滑雪｜初级道 3 小时</b><strong>¥700–1,100</strong><span>约 ¥348–538 / 人；季节与日期不同</span></div>
+        <div class="costitem"><b>餐饮｜3 天</b><strong>¥900–1,500</strong><span>普通餐饮，不含高价套餐与购物</span></div>
+        <div class="costitem"><b>油费 + 高速费</b><strong>¥300–500</strong><span>广州—南山—宝安—广州估算</span></div>
+        <div class="costitem"><b>市内停车</b><strong>¥50–200</strong><span>酒店住客停车以酒店当日规则为准</span></div>
+        <div class="costitem"><b>预算未计入</b><strong>另留机动金</strong><span>儿童票差价、额外项目、快速通道、纪念品</span></div>
+      </div>
+      <div class="note"><strong>估算口径：</strong>2 位成人、1 辆普通燃油车、无儿童、住益田威斯汀两晚；普通周末/非大型假期。滑雪按初级道 3 小时成人票参考，价格随季节浮动；教练课、手套/雪镜及额外项目未计。房价和票价以确认日期后的实际下单价为准。可查看<a href="https://www.cncn.com/piao/1810">欢乐谷</a>、<a href="https://touch.piao.qunar.com/touch/detail.htm?id=191026">世界之窗</a>、<a href="https://touch.piao.qunar.com/touch/detail_556947.html">前海冰雪世界</a>近期线上票价。</div>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2 class="section-title"><i class="dot"></i>Day 1｜广州 → 世界之窗</h2>
+    <article class="card">
+      <div class="day-head"><div class="day-no">DAY<br>01</div><div><h3>抵达后逛世界之窗</h3><p>先到酒店停车/寄存行李，下午入园，夜间看当天演出安排。</p></div></div>
+      <div class="timeline">
+        <div class="stop"><span class="time">出发时间按日期调整</span><h4>广州出发，导航到酒店</h4><p>周末/节假日可考虑 06:30–07:00 出发；若是工作日，把驶入深圳市内的时间安排在 09:00 后，或先申请临时通行。按当天路况预留 2–3 小时以上，途中休息、补水。</p></div>
+        <div class="stop"><span class="time">抵达后</span><h4>酒店停车、寄存行李</h4><p>酒店地址：南山区深南大道 9028-2 号。若未到 15:00 入住时间，先问能否停车和寄存行李；世界之窗就在酒店对面附近，步行前往。</p></div>
+        <div class="stop"><span class="time">中午–傍晚</span><h4>世界之窗分区游览</h4><p>世界之窗官方介绍的开闭园时间为 09:00–21:30；当天可能调整。入园拿地图，按当日演出时刻串联各洲景区和世界广场。</p></div>
+        <div class="stop"><span class="time">傍晚–夜间</span><h4>看夜景和当晚演出</h4><p>烟花、灯光秀、实景演出不保证每天相同；以当日节目表为准，预留用餐和散场时间。</p></div>
+        <div class="stop"><span class="time">夜间出园后</span><h4>回酒店办理入住</h4><p>酒店官网所列入住时间 15:00、退房时间 12:00；可在游园结束后办理入住，住客自助停车情况以酒店确认信息为准。</p></div>
+      </div>
+      <div class="note"><strong>小提醒：</strong>若从广州出发遇到拥堵，缩短园内游览时长，不要为了赶演出疲劳驾驶；欢乐谷留到第 2 天整天玩。</div>
+    </article>
+  </section>
+
+  <section class="section">
+    <h2 class="section-title"><i class="dot"></i>Day 2｜欢乐谷</h2>
+    <article class="card">
+      <div class="day-head"><div class="day-no">DAY<br>02</div><div><h3>把整天留给欢乐谷</h3><p>从酒店步行/短途前往；建议轻装，留足项目排队和休息时间。</p></div></div>
+      <div class="timeline">
+        <div class="stop"><span class="time">开园前后</span><h4>早餐后入园</h4><p>深圳欢乐谷开放时间随日期、活动调整；出发前查官网公园时间、项目检修表和演出表。</p></div>
+        <div class="stop"><span class="time">上午–下午</span><h4>优先玩最想玩的项目</h4><p>入园后先看检修和排队情况；刺激项目与亲子项目分区安排，中午坐下休息补水。</p></div>
+        <div class="stop"><span class="time">傍晚</span><h4>补玩、看演出或提早离园</h4><p>根据体力选一项即可。第二天还要滑雪，不必硬撑到闭园。</p></div>
+        <div class="stop"><span class="time">晚上</span><h4>回酒店休息，准备滑雪</h4><p>把身份证、雪场预约信息和保暖贴身衣物收好；车继续停酒店，第二天退房后直接去宝安。</p></div>
+      </div>
+    </article>
+  </section>
+
+  <section class="section">
+    <h2 class="section-title"><i class="dot"></i>Day 3｜前海滑雪 → 广州</h2>
+    <article class="card">
+      <div class="day-head"><div class="day-no">DAY<br>03</div><div><h3>上午滑雪，午后返程</h3><p>退房后开车去宝安区前海冰雪世界，建议提前买好指定时段雪票。</p></div></div>
+      <div class="timeline">
+        <div class="stop"><span class="time">08:00–09:00</span><h4>早餐、退房，行李放车上</h4><p>导航到“华发冰雪热雪奇迹”，地址为深圳市宝安区沙井街道滨江大道 666 号。它在前海冰雪世界项目内、靠近国际会展中心；从南山酒店过去按实时导航预留车程。</p></div>
+        <div class="stop"><span class="time">10:00–13:00</span><h4>初级道滑雪体验</h4><p>雪场目前常见开放时段为 10:00–22:00，实际以当日公告为准。初学者建议订 3 小时初级道；办理租具、换装和入场都要预留时间。</p></div>
+        <div class="stop"><span class="time">13:00–14:30</span><h4>换装、午餐、检查返程路况</h4><p>确认身份证、雪具和行李都已取回；补水吃饭，查询广深高速/沿江高速实时路况。</p></div>
+        <div class="stop"><span class="time">建议 14:00–14:30 离开</span><h4>宝安 → 广州</h4><p>尽量早点返程，避免工作日晚高峰。按交警通告走允许路线；疲劳时进服务区休息，不赶时间。</p></div>
+      </div>
+      <div class="note"><strong>滑雪准备：</strong>购票时确认雪票含哪些装备和可用雪道，场馆常年低温，穿保暖贴身衣物；手套、雪镜等是否含在票内按套餐说明核对。初学者可考虑约教练，费用未计入本预算。</div>
+    </article>
+  </section>
+
+  <section class="section">
+    <h2 class="section-title"><i class="dot"></i>还可以加入的路线</h2>
+    <div class="card">
+      <div class="place"><b>华侨城创意文化园｜推荐加在第 3 天</b><p>老厂房街区、咖啡和小店，节奏轻；展览需另查开放信息。离酒店所在的华侨城片区近。</p></div>
+      <div class="place"><b>锦绣中华·民俗村｜替换一个主题乐园半天/一天</b><p>想看民俗、微缩景观和大型演出，可把它作为第三个主题园；时间有限时建议替换，不建议硬塞进两大乐园之间。</p></div>
+      <div class="place"><b>深圳湾公园 / 人才公园｜看海散步</b><p>适合亲子放电、傍晚散步和看城市天际线；从华侨城片区开车过去需预留路程与停车时间。</p></div>
+      <div class="place"><b>南头古城｜历史街区与小吃</b><p>适合喜欢老城和城市人文的家庭，可替换第 3 天创意园；游览时长可控，注意周边停车情况。</p></div>
+      <p class="small">这趟已固定安排两座主题乐园和一次滑雪体验，建议别再加远距离景点；若不滑雪，可改回深圳湾公园或创意园。</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2 class="section-title"><i class="dot"></i>出发前准备</h2>
+    <div class="card">
+      <ul class="checklist">
+        <li><b>酒店：</b>核对入住日期、房型、停车是否免费/是否需登记车牌；确认提前停车和寄存行李安排。</li>
+        <li><b>车况：</b>检查轮胎、胎压、刹车、灯光、雨刮、冷却液；带驾驶证、行驶证、充电线/应急补胎工具。</li>
+        <li><b>路线：</b>提前下载导航离线地图；出发前查广深高速、广深沿江高速路况和天气。</li>
+        <li><b>门票：</b>优先从景区官方公众号/官网购买；核对入园日期、身份证件要求、退改规则和身高限制。</li>
+        <li><b>随身包：</b>身份证、手机、充电宝、饮用水、防晒/雨具、舒适步行鞋、常用药；滑雪另备保暖贴身衣物，核对手套/雪镜是否需自备。</li>
+        <li><b>同行人：</b>先约定集合点和走散联络方式；带小朋友/长者时确认身高、体力和休息点。</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2 class="section-title"><i class="dot"></i>深圳自驾限行与途中注意</h2>
+    <div class="traffic">
+      <h3>非深圳号牌：工作日早晚高峰需特别安排</h3>
+      <p>深圳交警现行通告（2026-09-17 至 2027-09-16）：非深圳号牌小客车在<strong>工作日 7:00–9:00、17:30–19:30</strong>原则上不得在深圳市内道路通行（通告列出的特定道路例外）。</p>
+      <p>周末及法定节假日不受这项工作日早晚高峰限行。若确需在限行时段进出，可按交警通告通过“深圳交警”微信公众号星级用户申请：每月一次、一天的全市临时通行。</p>
+      <p><strong>雪场路线特别提醒：</strong>现行通告列出前往华发冰雪世界可通行的相关道路，包括凤塘大道、展城路、沙福路；工作日高峰时按交警通告和导航规划行驶，不要自行绕入受限道路。</p>
+      <p><strong>本行程建议：</strong>工作日尽量 9:00 后进入市区，滑雪结束后在 14:00–14:30 左右出发回广州。出发前再核对通告是否更新。</p>
+    </div>
+    <div class="card">
+      <ul class="checklist">
+        <li>高速不超速、不占应急车道；变道先打灯，保持车距。</li>
+        <li>每约 2 小时找安全地点休息；司机困倦就换人或停车休息，车内不疲劳驾驶。</li>
+        <li>导航只由乘客操作；遇暴雨、积水或能见度差，降低车速并加大车距。</li>
+        <li>进景区和酒店停车场先看限高、收费与出口位置；贵重物品不要留在车内显眼处。</li>
+        <li>离开酒店前确认行李、证件、充电器和儿童物品；返程出发后及时告诉家人预计到达时间。</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2 class="section-title"><i class="dot"></i>一键打开地图 / 官方信息</h2>
+    <div class="card">
+      <div class="btns">
+        <a class="btn" href="https://uri.amap.com/search?keyword=%E6%B7%B1%E5%9C%B3%E7%9B%8A%E7%94%B0%E5%A8%81%E6%96%AF%E6%B1%80%E9%85%92%E5%BA%97&amp;city=%E6%B7%B1%E5%9C%B3%E5%B8%82">地图搜酒店</a>
+        <a class="btn light" href="https://uri.amap.com/search?keyword=%E6%B7%B1%E5%9C%B3%E6%AC%A2%E4%B9%90%E8%B0%B7&amp;city=%E6%B7%B1%E5%9C%B3%E5%B8%82">地图搜欢乐谷</a>
+        <a class="btn light" href="https://uri.amap.com/search?keyword=%E4%B8%96%E7%95%8C%E4%B9%8B%E7%AA%97&amp;city=%E6%B7%B1%E5%9C%B3%E5%B8%82">地图搜世界之窗</a>
+        <a class="btn light" href="https://uri.amap.com/search?keyword=%E5%8D%8E%E5%8F%91%E5%86%B0%E9%9B%AA%E7%83%AD%E9%9B%AA%E5%A5%87%E8%BF%B9&amp;city=%E6%B7%B1%E5%9C%B3%E5%B8%82">地图搜前海雪场</a>
+        <a class="btn light" href="tel:075526988888">拨酒店电话</a>
+      </div>
+      <p class="source" style="margin-top:15px"><b>出发前再确认：</b><br>
+        <a href="https://sz.happyvalley.cn/frmindex.aspx">深圳欢乐谷官网</a> · 
+        <a href="https://www.ctgii.com/scenic/theme_park/62">世界之窗官方信息</a> · 
+        <a href="https://wtl.sz.gov.cn/bsfw/mzwhhd/mzly/content/post_12352494.html">前海冰雪世界票价参考</a> · 
+        <a href="https://www.klook.cn/zh-CN/activity/171780-shenzhen-huafa-snow-bonski/">雪场预约与入场须知</a> · 
+        <a href="https://www.marriott.com.cn/hotels/szxwi-the-westin-shenzhen-nanshan/overview/">深圳益田威斯汀酒店官网</a> · 
+        <a href="https://szjj.sz.gov.cn/m/YD_ZWGK/YD_TZGG/YD_GGJG/content/post_12979041.html">深圳交警外地车通告</a>
+      </p>
+      <p class="small">整理日期：2026 年 10 月 1 日。游园时间、活动、路况和限行规则可能调整，最终以景区、交警和地图实时信息为准。</p>
+    </div>
+  </section>
+  <footer>祝旅途顺利 · 慢慢玩，平安回家</footer>
+</main>
+</body>
+</html>
