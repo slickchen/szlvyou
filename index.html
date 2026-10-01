@@ -1,0 +1,412 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#103c43">
+  <meta name="description" content="可重复使用的家庭旅行计划：管理多次出行，添加景点、酒店、餐饮和路线顺序。">
+  <title>家游计划｜家庭旅行规划</title>
+  <style>
+    :root{
+      --ink:#19383b;--muted:#6a8181;--line:#e2ece8;--paper:#f3f7f4;--card:#fff;
+      --teal:#14776c;--teal-dark:#103c43;--mint:#e5f5ed;--coral:#ef8065;--sun:#ffd778;
+      --shadow:0 12px 32px #173e3810;--radius:20px
+    }
+    *{box-sizing:border-box}
+    body{margin:0;background:var(--paper);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;line-height:1.55}
+    button,input,select,textarea{font:inherit}
+    button{cursor:pointer}
+    a{color:inherit}
+    .app{max-width:780px;min-height:100vh;margin:0 auto;padding:0 16px calc(30px + env(safe-area-inset-bottom))}
+    .topbar{display:flex;justify-content:space-between;align-items:center;padding:16px 2px 13px}
+    .brand{display:flex;align-items:center;gap:9px;font-size:15px;font-weight:850;letter-spacing:.02em}
+    .brand-mark{display:grid;place-items:center;width:34px;height:34px;background:var(--teal-dark);color:white;border-radius:12px;font-size:18px}
+    .autosave{font-size:11px;color:var(--muted);background:#fff;border:1px solid var(--line);border-radius:99px;padding:5px 9px}
+    .hero{position:relative;overflow:hidden;color:#fff;border-radius:25px;padding:25px 21px 21px;background:radial-gradient(circle at 93% 13%,#69c3a7 0 4%,transparent 4.4%),radial-gradient(circle at 85% 28%,#ee8065 0 2%,transparent 2.5%),linear-gradient(142deg,#103c43,#126f67 75%,#25937d);box-shadow:var(--shadow)}
+    .hero:after{content:"";position:absolute;width:180px;height:180px;border:1px solid #ffffff25;border-radius:50%;right:-75px;bottom:-100px;box-shadow:0 0 0 18px #ffffff09,0 0 0 37px #ffffff06;pointer-events:none}
+    .eyebrow{font-size:10px;letter-spacing:.16em;font-weight:850;color:#bce9d9;text-transform:uppercase}
+    h1{font-size:29px;line-height:1.25;letter-spacing:.01em;margin:8px 0 7px}
+    .hero p{color:#e2f2ec;font-size:13px;max-width:470px;margin:0}
+    .hero-row{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:18px;position:relative;z-index:1}
+    .hero-note{font-size:11px;color:#ccece0}
+    .btn{border:0;border-radius:13px;padding:10px 14px;background:var(--teal);color:#fff;font-size:13px;font-weight:800;box-shadow:0 5px 12px #0c554329}
+    .btn:hover{filter:brightness(1.04)}
+    .btn.primary{background:#fff;color:var(--teal-dark)}
+    .btn.secondary{background:var(--mint);color:var(--teal)}
+    .btn.ghost{background:#f1f6f3;color:var(--ink);box-shadow:none}
+    .btn.danger{background:#fff0ed;color:#b24c3d;box-shadow:none}
+    .btn.small{font-size:11px;padding:7px 9px;border-radius:10px}
+    .actions{display:flex;flex-wrap:wrap;gap:8px}
+    .section-head{display:flex;justify-content:space-between;align-items:end;gap:10px;margin:22px 2px 11px}
+    .section-head h2{font-size:18px;line-height:1.2;margin:0}
+    .section-head p{margin:4px 0 0;color:var(--muted);font-size:11px}
+    .section-count{font-size:11px;color:var(--muted)}
+    .toolbar{display:flex;gap:8px;margin:13px 0 11px}
+    .search{width:100%;border:1px solid var(--line);border-radius:13px;background:white;padding:10px 12px;color:var(--ink);outline:none}
+    .search:focus,.field input:focus,.field textarea:focus,.field select:focus{border-color:#7bc5ae;box-shadow:0 0 0 3px #9cdac421}
+    .trip-list{display:grid;gap:10px}
+    .trip-card{background:var(--card);border:1px solid #e7efeb;border-radius:18px;padding:15px;box-shadow:0 5px 16px #173e3809}
+    .trip-card-top{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}
+    .trip-name{border:0;background:none;text-align:left;padding:0;color:var(--ink);font-size:17px;line-height:1.3;font-weight:850}
+    .trip-meta{color:var(--muted);font-size:11px;margin-top:5px}
+    .trip-dest{font-size:12px;color:#3c6866;margin-top:9px}
+    .trip-bottom{display:flex;align-items:center;justify-content:space-between;gap:9px;margin-top:14px;padding-top:11px;border-top:1px solid #edf2ef}
+    .trip-stats{font-size:11px;color:var(--muted)}
+    .icon-btn{border:0;background:#f1f6f3;color:#54706d;width:31px;height:31px;border-radius:10px;font-size:14px}
+    .icon-btn:hover{background:var(--mint);color:var(--teal)}
+    .empty{background:white;border:1px dashed #c8dcd3;border-radius:18px;padding:24px 18px;text-align:center;color:var(--muted);font-size:13px}
+    .backup-row{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0 0}
+    .screen[hidden]{display:none}
+    .back-row{display:flex;justify-content:space-between;align-items:center;margin:15px 1px 11px}
+    .back-btn{border:0;background:none;padding:6px 0;color:var(--teal);font-size:13px;font-weight:800}
+    .detail-hero{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:17px;box-shadow:var(--shadow)}
+    .detail-title{font-size:22px;line-height:1.25;font-weight:900;margin:0}
+    .detail-dest{font-size:13px;color:var(--muted);margin:6px 0 11px}
+    .chips{display:flex;gap:6px;flex-wrap:wrap}
+    .chip{font-size:10px;padding:5px 9px;border-radius:99px;background:var(--mint);color:#39766a;font-weight:750}
+    .detail-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:13px}
+    .days-nav{display:flex;gap:7px;overflow:auto;padding:2px 1px 8px;margin:12px 0 4px;scrollbar-width:none}
+    .days-nav::-webkit-scrollbar{display:none}
+    .day-tab{flex:0 0 auto;border:1px solid var(--line);background:white;color:#5c7472;padding:8px 11px;border-radius:99px;font-size:11px;font-weight:800}
+    .day-tab.active{background:var(--teal-dark);border-color:var(--teal-dark);color:white}
+    .day-card{background:white;border:1px solid var(--line);border-radius:18px;padding:14px;margin:10px 0;box-shadow:0 5px 17px #173e3808}
+    .day-title-row{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:9px}
+    .day-title{font-size:15px;font-weight:900}
+    .day-date{font-size:10px;color:var(--muted)}
+    .stop{border-top:1px solid #edf2ef;padding:12px 0 2px;margin-top:8px}
+    .stop-head{display:flex;align-items:flex-start;gap:10px}
+    .stop-time{flex:0 0 49px;padding:5px 6px;text-align:center;background:#fff3df;color:#86652a;border-radius:9px;font-size:10px;font-weight:850}
+    .stop-main{flex:1;min-width:0}
+    .stop-title{font-size:14px;font-weight:850;line-height:1.35;overflow-wrap:anywhere}
+    .stop-type{display:inline-block;margin-left:5px;border-radius:99px;background:#eff5f2;color:#69817d;font-size:9px;padding:2px 6px;vertical-align:1px;font-weight:700}
+    .stop-address{color:#51706e;font-size:11px;margin-top:4px;overflow-wrap:anywhere}
+    .stop-note{color:var(--muted);font-size:11px;margin-top:5px;white-space:pre-wrap;overflow-wrap:anywhere}
+    .stop-tools{display:flex;justify-content:flex-end;gap:5px;flex-wrap:wrap;margin:8px 0 0}
+    .stop-tools .icon-btn{width:auto;height:28px;padding:0 8px;font-size:10px}
+    .day-empty{padding:13px 8px;text-align:center;color:#809390;font-size:11px;border-top:1px solid #edf2ef}
+    .add-stop{width:100%;margin-top:7px;border:1px dashed #b9d6ca;background:#f8fcf9;color:var(--teal);border-radius:12px;padding:10px;font-size:12px;font-weight:850}
+    .budget-strip{display:flex;justify-content:space-between;align-items:center;gap:12px;background:#fff5df;color:#795d2b;border-radius:14px;padding:12px 13px;margin-top:12px;font-size:12px}
+    .budget-strip strong{font-size:14px;color:#684c18}
+    .budget-note{margin-top:10px;padding:11px 12px;border-radius:12px;background:#fffaf0;color:#796943;font-size:11px;line-height:1.65;white-space:pre-wrap}
+    .reminder-group{margin-top:12px;color:#607976;font-size:11px;line-height:1.7}
+    .reminder-group strong{color:#14776c;font-size:12px}
+    .reminder-group ul{padding-left:18px;margin:5px 0 0}
+    .reminder-group li{margin:3px 0}
+    .help{border-radius:15px;background:#eaf3ef;color:#52706d;padding:13px 14px;font-size:11px;margin:18px 0}
+    footer{padding:15px 3px 0;color:#81928f;text-align:center;font-size:10px}
+    .modal-backdrop{position:fixed;z-index:50;inset:0;background:#0d2a2dcc;display:none;align-items:flex-end;justify-content:center;padding:14px 10px env(safe-area-inset-bottom)}
+    .modal-backdrop.open{display:flex}
+    .modal{width:min(100%,560px);max-height:min(88vh,760px);overflow:auto;background:#fff;border-radius:22px;padding:17px;box-shadow:0 20px 80px #071d1d55;animation:rise .17s ease-out}
+    @keyframes rise{from{transform:translateY(15px);opacity:.7}to{transform:translateY(0);opacity:1}}
+    .modal-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:13px}
+    .modal-head h2{font-size:18px;margin:0}
+    .close-btn{border:0;background:#f0f5f2;border-radius:50%;width:31px;height:31px;color:#4f6e68;font-size:17px}
+    .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+    .field{display:flex;flex-direction:column;gap:5px;margin:8px 0}
+    .field.full{grid-column:1/-1}
+    .field label{font-size:11px;font-weight:800;color:#52706d}
+    .field input,.field select,.field textarea{width:100%;border:1px solid var(--line);background:#fbfdfb;border-radius:11px;padding:10px 11px;outline:none;font-size:13px;color:var(--ink)}
+    .field textarea{min-height:76px;resize:vertical}
+    .modal-footer{display:flex;justify-content:flex-end;gap:8px;margin-top:13px}
+    .file-input{display:none}
+    .toast{position:fixed;z-index:80;bottom:calc(20px + env(safe-area-inset-bottom));left:50%;transform:translate(-50%,16px);opacity:0;pointer-events:none;background:#183c3b;color:#fff;border-radius:99px;padding:9px 14px;font-size:12px;transition:.2s;box-shadow:var(--shadow);max-width:90vw;text-align:center}
+    .toast.show{opacity:1;transform:translate(-50%,0)}
+    @media(min-width:600px){.app{padding-left:25px;padding-right:25px}.hero{padding:31px}.hero h1{font-size:34px}.modal-backdrop{align-items:center}.trip-list{grid-template-columns:1fr 1fr}}
+  </style>
+</head>
+<body>
+<div class="app">
+  <header class="topbar">
+    <div class="brand"><span class="brand-mark">⌖</span><span>家游计划</span></div>
+    <span class="autosave" id="saveStatus">自动保存到本机</span>
+  </header>
+
+  <main>
+    <section id="homeScreen" class="screen">
+      <div class="hero">
+        <div class="eyebrow">FAMILY TRIP PLANNER</div>
+        <h1>把一家人的旅行<br>安排得明明白白</h1>
+        <p>每次出行建一份计划，地点按天排好；下次复制旧计划，改城市、换景点就能继续用。</p>
+        <div class="hero-row">
+          <span class="hero-note">多份行程 · 地点可调整 · 本机自动保存</span>
+          <button class="btn primary" data-action="new-trip">＋ 新建计划</button>
+        </div>
+      </div>
+
+      <div class="section-head">
+        <div><h2>我的旅行计划</h2><p>先从深圳三天两夜示例开始，也可以新建一份。</p></div>
+        <span class="section-count" id="tripCount"></span>
+      </div>
+      <div class="toolbar"><input id="tripSearch" class="search" type="search" placeholder="搜索计划名称或目的地" autocomplete="off"></div>
+      <div id="tripList" class="trip-list"></div>
+      <div class="backup-row">
+        <button class="btn secondary small" data-action="export">导出备份</button>
+        <button class="btn ghost small" data-action="import">导入备份</button>
+        <button class="btn ghost small" data-action="paste-import">粘贴 JSON 导入</button>
+        <input id="importFile" class="file-input" type="file" accept="application/json,.json">
+      </div>
+      <div class="help">计划保存在当前浏览器，不会自动上传。换手机或与家人分享时，先导出 JSON 备份，再把文件发给对方导入。</div>
+    </section>
+
+    <section id="detailScreen" class="screen" hidden>
+      <div class="back-row"><button class="back-btn" data-action="home">‹ 全部计划</button><button class="icon-btn" data-action="edit-trip" aria-label="编辑计划">✎</button></div>
+      <div id="tripDetail"></div>
+      <footer>家人出行 · 一起商量，按需调整</footer>
+    </section>
+  </main>
+</div>
+
+<div id="modalBackdrop" class="modal-backdrop" role="presentation">
+  <section class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="modal-head"><h2 id="modalTitle">新建计划</h2><button class="close-btn" type="button" data-action="close-modal" aria-label="关闭">×</button></div>
+    <form id="modalForm"><div id="modalFields"></div><div class="modal-footer"><button class="btn ghost" type="button" data-action="close-modal">取消</button><button class="btn" type="submit">保存</button></div></form>
+  </section>
+</div>
+<div id="toast" class="toast" aria-live="polite"></div>
+
+<script>
+(() => {
+  'use strict';
+  const STORE_KEY = 'jiayou-plan-v1';
+  const TYPES = ['景点','酒店','餐饮','交通','滑雪','其他'];
+  const id = () => (globalThis.crypto && crypto.randomUUID) ? crypto.randomUUID() : 'id-' + Date.now().toString(36) + Math.random().toString(36).slice(2,9);
+  const dateToday = () => {
+    const d = new Date();
+    return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+  };
+  const starter = () => ({
+    id:id(), title:'深圳三天两夜自驾游', destination:'广州 → 深圳南山 / 宝安', startDate:'', days:3, people:'一家人', budget:'¥4,500–9,300（2位成人参考）', budgetNote:'酒店 2 晚 ¥1,800–5,000；两园门票 ¥780–960；前海初级道 3 小时 ¥700–1,100；3 天餐饮 ¥900–1,500；油费 + 高速 ¥300–500；停车 ¥50–200。未含儿童票差价、教练、额外雪具和购物。价格会随日期变化，下单前请核对官方预订页。', updatedAt:Date.now(),
+    stops:[
+      {id:id(),day:1,time:'07:00',title:'广州出发',type:'交通',address:'广州 → 深圳',note:'工作日安排在 9:00 后进入深圳市区；途中留意路况并休息。',order:10},
+      {id:id(),day:1,time:'11:00',title:'世界之窗',type:'景点',address:'深圳市南山区深南大道 9037 号',note:'先在酒店停车、寄存行李，再步行入园；看当日演出安排。',order:20},
+      {id:id(),day:1,time:'21:00',title:'深圳益田威斯汀酒店',type:'酒店',address:'深圳市南山区深南大道 9028-2 号',note:'入住后休息，车辆可留在酒店。',order:30},
+      {id:id(),day:2,time:'09:30',title:'深圳欢乐谷',type:'景点',address:'深圳市南山区华侨城西街 1 号',note:'整天游玩；先看项目检修和演出表，按体力安排。',order:10},
+      {id:id(),day:2,time:'19:00',title:'晚餐 / 回酒店休息',type:'餐饮',address:'世界之窗 / 益田假日广场周边',note:'为第二天滑雪留足体力。',order:20},
+      {id:id(),day:3,time:'08:30',title:'退房，前往前海冰雪世界',type:'交通',address:'深圳市宝安区滨江大道 666 号',note:'带好身份证和预约信息；确认雪票时段、停车与装备。',order:10},
+      {id:id(),day:3,time:'10:00',title:'华发冰雪热雪奇迹｜初级道滑雪',type:'滑雪',address:'深圳市宝安区滨江大道 666 号',note:'建议预订 3 小时初级道；手套、雪镜是否包含按套餐确认。',order:20},
+      {id:id(),day:3,time:'14:00',title:'返程回广州',type:'交通',address:'深圳 → 广州',note:'午餐后查看实时路况，尽量避开工作日晚高峰。',order:30}
+    ]
+  });
+  let data = loadData();
+  let activeTripId = null;
+  let modalState = null;
+  let toastTimer = null;
+
+  function loadData(){
+    try {
+      const raw = localStorage.getItem(STORE_KEY);
+      if (!raw) return {trips:[starter()]};
+      const parsed = JSON.parse(raw);
+      if (!parsed || !Array.isArray(parsed.trips)) return {trips:[starter()]};
+      return {trips:parsed.trips.map(normalizeTrip).filter(Boolean)};
+    } catch(e){ return {trips:[starter()]}; }
+  }
+  function normalizeTrip(t){
+    if (!t || typeof t !== 'object') return null;
+    const days = Math.max(1, Math.min(30, Number(t.days)||1));
+    return {
+      id:String(t.id||id()), title:String(t.title||'未命名旅行'), destination:String(t.destination||''),
+      startDate:String(t.startDate||''), days, people:String(t.people||''), budget:String(t.budget||''), budgetNote:String(t.budgetNote||''),
+      updatedAt:Number(t.updatedAt)||Date.now(), stops:Array.isArray(t.stops)?t.stops.map((s,i)=>({
+        id:String(s.id||id()), day:Math.max(1,Math.min(days,Number(s.day)||1)), time:String(s.time||''), title:String(s.title||'未命名地点'),
+        type:TYPES.includes(s.type)?s.type:'其他', address:String(s.address||''), note:String(s.note||''), order:Number(s.order)||((i+1)*10)
+      })):[]
+    };
+  }
+  function persist(){
+    const el=document.getElementById('saveStatus');
+    try { localStorage.setItem(STORE_KEY,JSON.stringify(data)); el.textContent='自动保存到本机'; el.style.color=''; }
+    catch(e){ el.textContent='当前浏览器无法保存'; el.style.color='#b24c3d'; }
+  }
+  function escapeHtml(value){ return String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+  function activeTrip(){ return data.trips.find(t=>t.id===activeTripId)||null; }
+  function nights(t){ return Math.max(0,Number(t.days||1)-1); }
+  function dateForDay(t,day){
+    if(!t.startDate) return '';
+    const [y,m,d]=t.startDate.split('-').map(Number);
+    const dt=new Date(y,m-1,d+day-1);
+    return `${dt.getMonth()+1}月${dt.getDate()}日`;
+  }
+  function toast(message){
+    const el=document.getElementById('toast'); el.textContent=message; el.classList.add('show');
+    clearTimeout(toastTimer); toastTimer=setTimeout(()=>el.classList.remove('show'),2300);
+  }
+  function render(){
+    renderTripList();
+    const trip=activeTrip();
+    document.getElementById('homeScreen').hidden=!!trip;
+    document.getElementById('detailScreen').hidden=!trip;
+    if(trip) renderDetail(trip);
+  }
+  function renderTripList(){
+    const q=document.getElementById('tripSearch').value.trim().toLowerCase();
+    const trips=data.trips.filter(t=>`${t.title} ${t.destination}`.toLowerCase().includes(q));
+    document.getElementById('tripCount').textContent=`${data.trips.length} 份计划`;
+    const host=document.getElementById('tripList');
+    if(!trips.length){ host.innerHTML='<div class="empty">没有匹配的计划，试试新建一份。</div>'; return; }
+    host.innerHTML=trips.map(t=>{
+      const count=t.stops.length;
+      const date=t.startDate?`${escapeHtml(t.startDate)} 出发`:'日期待定';
+      return `<article class="trip-card">
+        <div class="trip-card-top"><div><button class="trip-name" data-action="open-trip" data-id="${escapeHtml(t.id)}">${escapeHtml(t.title)}</button><div class="trip-meta">${date} · ${t.days} 天 ${nights(t)} 夜</div></div><button class="icon-btn" data-action="delete-trip" data-id="${escapeHtml(t.id)}" aria-label="删除计划">×</button></div>
+        <div class="trip-dest">⌖ ${escapeHtml(t.destination||'还没填写目的地')}</div>
+        <div class="trip-bottom"><span class="trip-stats">${count} 个行程点${t.people?` · ${escapeHtml(t.people)}`:''}</span><div class="actions"><button class="btn ghost small" data-action="copy-trip" data-id="${escapeHtml(t.id)}">复制复用</button><button class="btn secondary small" data-action="open-trip" data-id="${escapeHtml(t.id)}">打开行程</button></div></div>
+      </article>`;
+    }).join('');
+  }
+  function renderDetail(t){
+    const totalStops=t.stops.length;
+    let html=`<div class="detail-hero">
+      <h1 class="detail-title">${escapeHtml(t.title)}</h1>
+      <div class="detail-dest">⌖ ${escapeHtml(t.destination||'目的地待补充')}</div>
+      <div class="chips"><span class="chip">${t.days} 天 ${nights(t)} 夜</span>${t.startDate?`<span class="chip">${escapeHtml(t.startDate)} 出发</span>`:''}${t.people?`<span class="chip">${escapeHtml(t.people)}</span>`:''}<span class="chip">${totalStops} 个地点</span></div>
+      ${t.budget?`<div class="budget-strip"><span>预算参考</span><strong>${escapeHtml(t.budget)}</strong></div>`:''}
+      ${t.budgetNote?`<div class="budget-note">${escapeHtml(t.budgetNote)}</div>`:''}
+      <div class="detail-actions"><button class="btn secondary small" data-action="add-stop">＋ 添加地点</button><button class="btn ghost small" data-action="copy-trip" data-id="${escapeHtml(t.id)}">复制这份计划</button><button class="btn ghost small" data-action="edit-trip">编辑基本信息</button></div>
+    </div>`;
+    html+=`<nav class="days-nav" aria-label="行程日期">${Array.from({length:t.days},(_,i)=>`<button class="day-tab" data-action="scroll-day" data-day="${i+1}">第 ${i+1} 天</button>`).join('')}</nav>`;
+    for(let day=1;day<=t.days;day++){
+      const stops=t.stops.filter(s=>s.day===day).sort((a,b)=>a.order-b.order);
+      html+=`<section class="day-card" id="day-${day}"><div class="day-title-row"><div><div class="day-title">第 ${day} 天 ${dateForDay(t,day)?`<span class="day-date">· ${dateForDay(t,day)}</span>`:''}</div><div class="day-date">${stops.length?`${stops.length} 个地点，按顺序游玩`:'还没有安排地点'}</div></div><button class="icon-btn" data-action="add-stop" data-day="${day}" aria-label="添加地点">＋</button></div>`;
+      if(!stops.length) html+='<div class="day-empty">点击下方按钮，添加景点、酒店、餐饮或交通安排。</div>';
+      stops.forEach((s,index)=>{
+        const address=s.address?`<div class="stop-address">⌖ ${escapeHtml(s.address)}</div>`:'';
+        const note=s.note?`<div class="stop-note">${escapeHtml(s.note)}</div>`:'';
+        const mapTerm=encodeURIComponent(s.address||s.title);
+        html+=`<article class="stop"><div class="stop-head"><div class="stop-time">${escapeHtml(s.time||'待定')}</div><div class="stop-main"><div class="stop-title">${escapeHtml(s.title)}<span class="stop-type">${escapeHtml(s.type)}</span></div>${address}${note}</div></div>
+          <div class="stop-tools"><button class="icon-btn" data-action="move-stop" data-id="${escapeHtml(s.id)}" data-dir="-1" ${index===0?'disabled':''}>↑ 上移</button><button class="icon-btn" data-action="move-stop" data-id="${escapeHtml(s.id)}" data-dir="1" ${index===stops.length-1?'disabled':''}>↓ 下移</button><a class="icon-btn" style="display:flex;align-items:center;text-decoration:none" href="https://uri.amap.com/search?keyword=${mapTerm}&amp;city=${encodeURIComponent(t.destination||'深圳市')}" target="_blank" rel="noopener">地图</a><button class="icon-btn" data-action="edit-stop" data-id="${escapeHtml(s.id)}">编辑</button><button class="icon-btn" data-action="delete-stop" data-id="${escapeHtml(s.id)}">删除</button></div>
+        </article>`;
+      });
+      html+=`<button class="add-stop" data-action="add-stop" data-day="${day}">＋ 添加第 ${day} 天地点</button></section>`;
+    }
+    html+=`<section class="day-card reminder-card"><div class="day-title">出行准备与自驾提醒</div><div class="reminder-group"><strong>出发前</strong><ul><li>核对酒店日期、房型、停车及寄存安排，确认门票时段、证件要求和退改规则。</li><li>检查轮胎、胎压、刹车、灯光和雨刮；带驾驶证、行驶证、充电线、饮水和常用药。</li><li>查看天气与实时路况，提前下载导航；有儿童同行时备好儿童座椅并约定集合点。</li></ul></div><div class="reminder-group"><strong>途中</strong><ul><li>遵守限速和道路通行规定，变道打灯、保持车距；导航由乘客操作。</li><li>约每 2 小时在安全地点休息；司机困倦就停车休息或换人，不赶路。</li><li>停车先确认限高、收费和出口，贵重物品不要留在车内显眼处。</li></ul></div><div class="reminder-group"><strong>返程</strong><ul><li>退房前检查证件、行李、充电器和儿童用品，确认停车费用及车辆状态。</li><li>出发前重新查看路况和天气，留足回程时间；暴雨或疲劳时先休息。</li><li>出发后告知家人预计到达时间，到家后检查随身物品并确认行李齐全。</li></ul></div></section>`;
+    html+='<div class="help">可用“↑ / ↓”调整当天路线顺序；复制计划后，改地点、日期和备注即可重复使用。行程数据只保存在这台设备的浏览器中。</div>';
+    document.getElementById('tripDetail').innerHTML=html;
+  }
+  function openModal(title,fields,mode){
+    modalState=mode;
+    document.getElementById('modalTitle').textContent=title;
+    document.getElementById('modalFields').innerHTML=fields;
+    const backdrop=document.getElementById('modalBackdrop'); backdrop.classList.add('open');
+    document.body.style.overflow='hidden';
+    setTimeout(()=>backdrop.querySelector('input,select,textarea')?.focus(),80);
+  }
+  function closeModal(){document.getElementById('modalBackdrop').classList.remove('open');document.body.style.overflow='';modalState=null;}
+  function tripFields(t={}){
+    return `<div class="form-grid">
+      <div class="field full"><label for="fTitle">计划名称 *</label><input id="fTitle" name="title" required maxlength="60" placeholder="例如：暑假珠海亲子游" value="${escapeHtml(t.title||'')}"></div>
+      <div class="field full"><label for="fDestination">目的地 / 路线</label><input id="fDestination" name="destination" maxlength="100" placeholder="例如：广州 → 珠海长隆" value="${escapeHtml(t.destination||'')}"></div>
+      <div class="field"><label for="fDate">出发日期</label><input id="fDate" name="startDate" type="date" value="${escapeHtml(t.startDate||'')}"></div>
+      <div class="field"><label for="fDays">天数</label><input id="fDays" name="days" type="number" min="1" max="30" value="${Number(t.days)||3}"></div>
+      <div class="field"><label for="fPeople">同行人</label><input id="fPeople" name="people" maxlength="50" placeholder="例如：2大1小" value="${escapeHtml(t.people||'')}"></div>
+      <div class="field"><label for="fBudget">预算参考</label><input id="fBudget" name="budget" maxlength="60" placeholder="例如：¥6,000 左右" value="${escapeHtml(t.budget||'')}"></div>
+      <div class="field full"><label for="fBudgetNote">预算拆分备注</label><textarea id="fBudgetNote" name="budgetNote" maxlength="600" placeholder="可记录酒店、门票、餐饮、交通等估算">${escapeHtml(t.budgetNote||'')}</textarea></div>
+    </div>`;
+  }
+  function stopFields(t,stop={}){
+    const day=Number(stop.day)||1;
+    return `<div class="form-grid">
+      <div class="field"><label for="sDay">安排在第几天 *</label><select id="sDay" name="day">${Array.from({length:t.days},(_,i)=>`<option value="${i+1}" ${i+1===day?'selected':''}>第 ${i+1} 天</option>`).join('')}</select></div>
+      <div class="field"><label for="sTime">时间</label><input id="sTime" name="time" type="time" value="${escapeHtml(stop.time||'')}"></div>
+      <div class="field full"><label for="sTitle">地点 / 安排名称 *</label><input id="sTitle" name="title" required maxlength="80" placeholder="例如：海边公园、酒店入住" value="${escapeHtml(stop.title||'')}"></div>
+      <div class="field"><label for="sType">类型</label><select id="sType" name="type">${TYPES.map(x=>`<option value="${x}" ${x===stop.type?'selected':''}>${x}</option>`).join('')}</select></div>
+      <div class="field"><label for="sAddress">地址 / 导航关键词</label><input id="sAddress" name="address" maxlength="120" placeholder="填详细地址更好导航" value="${escapeHtml(stop.address||'')}"></div>
+      <div class="field full"><label for="sNote">备注</label><textarea id="sNote" name="note" maxlength="500" placeholder="预约、停车、门票、集合点等提醒">${escapeHtml(stop.note||'')}</textarea></div>
+    </div>`;
+  }
+  function newTrip(){openModal('新建旅行计划',tripFields({days:3}),{type:'new-trip'});}
+  function editTrip(){const t=activeTrip();if(t)openModal('编辑计划信息',tripFields(t),{type:'edit-trip',id:t.id});}
+  function addStop(day=1){const t=activeTrip();if(t)openModal('添加旅行地点',stopFields(t,{day:Number(day)||1,type:'景点'}),{type:'new-stop',tripId:t.id});}
+  function editStop(stopId){const t=activeTrip(),s=t?.stops.find(x=>x.id===stopId);if(t&&s)openModal('编辑旅行地点',stopFields(t,s),{type:'edit-stop',tripId:t.id,id:s.id});}
+  function saveModal(event){
+    event.preventDefault();
+    const fd=new FormData(event.currentTarget); const vals=Object.fromEntries(fd.entries());
+    if(modalState?.type==='import-json'){
+      applyImportText(vals.payload||'');closeModal();return;
+    }
+    if(modalState?.type==='new-trip'||modalState?.type==='edit-trip'){
+      const trip={title:vals.title.trim(),destination:vals.destination.trim(),startDate:vals.startDate,days:Math.max(1,Math.min(30,Number(vals.days)||1)),people:vals.people.trim(),budget:vals.budget.trim(),budgetNote:vals.budgetNote.trim()};
+      if(modalState.type==='new-trip'){const created={...trip,id:id(),updatedAt:Date.now(),stops:[]};data.trips.unshift(created);activeTripId=created.id;toast('计划已创建');}
+      else {const t=data.trips.find(x=>x.id===modalState.id);if(t){const oldDays=t.days;t.title=trip.title;t.destination=trip.destination;t.startDate=trip.startDate;t.days=trip.days;t.people=trip.people;t.budget=trip.budget;t.budgetNote=trip.budgetNote;t.stops.forEach(s=>s.day=Math.min(s.day,t.days));t.updatedAt=Date.now();if(oldDays!==t.days)toast('计划已保存，超出的行程点已移到最后一天');else toast('计划已更新');}}
+    } else if(modalState?.type==='new-stop'||modalState?.type==='edit-stop'){
+      const t=data.trips.find(x=>x.id===modalState.tripId);if(!t)return;
+      const stop={day:Number(vals.day)||1,time:vals.time,title:vals.title.trim(),type:TYPES.includes(vals.type)?vals.type:'其他',address:vals.address.trim(),note:vals.note.trim()};
+      if(modalState.type==='new-stop'){
+        const sameDay=t.stops.filter(s=>s.day===stop.day);stop.id=id();stop.order=(sameDay.reduce((m,s)=>Math.max(m,s.order),0)||0)+10;t.stops.push(stop);toast('地点已添加');
+      } else {const s=t.stops.find(x=>x.id===modalState.id);if(s){const changedDay=s.day!==stop.day;Object.assign(s,stop);if(changedDay)s.order=(t.stops.filter(x=>x.day===stop.day&&x.id!==s.id).reduce((m,x)=>Math.max(m,x.order),0)||0)+10;toast('地点已更新');}}
+      t.updatedAt=Date.now();
+    }
+    persist();closeModal();render();
+  }
+  function duplicateTrip(tripId){
+    const src=data.trips.find(t=>t.id===tripId);if(!src)return;
+    const copy=JSON.parse(JSON.stringify(src));copy.id=id();copy.title=`${src.title}（副本）`;copy.updatedAt=Date.now();copy.stops=copy.stops.map(s=>({...s,id:id()}));data.trips.unshift(copy);persist();toast('已复制，可改名和调整地点');render();
+  }
+  function deleteTrip(tripId){
+    const t=data.trips.find(x=>x.id===tripId);if(!t)return;
+    if(!confirm(`确定删除“${t.title}”吗？删除后无法从本机恢复。`))return;
+    data.trips=data.trips.filter(x=>x.id!==tripId);if(activeTripId===tripId)activeTripId=null;persist();render();toast('计划已删除');
+  }
+  function deleteStop(stopId){
+    const t=activeTrip(),s=t?.stops.find(x=>x.id===stopId);if(!t||!s)return;
+    if(!confirm(`删除地点“${s.title}”？`))return;
+    t.stops=t.stops.filter(x=>x.id!==stopId);t.updatedAt=Date.now();persist();render();toast('地点已删除');
+  }
+  function moveStop(stopId,dir){
+    const t=activeTrip(),s=t?.stops.find(x=>x.id===stopId);if(!t||!s)return;
+    const same=t.stops.filter(x=>x.day===s.day).sort((a,b)=>a.order-b.order);const i=same.findIndex(x=>x.id===s.id),j=i+Number(dir);
+    if(i<0||j<0||j>=same.length)return;
+    const temp=same[i].order;same[i].order=same[j].order;same[j].order=temp;t.updatedAt=Date.now();persist();render();
+  }
+  function exportData(){
+    const backup={app:'家游计划',version:1,exportedAt:new Date().toISOString(),trips:data.trips};
+    const blob=new Blob([JSON.stringify(backup,null,2)],{type:'application/json'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=`家游计划备份-${dateToday()}.json`;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1500);toast('备份文件已生成');
+  }
+  function importData(file){
+    if(!file)return;
+    const reader=new FileReader();reader.onload=()=>{applyImportText(reader.result);document.getElementById('importFile').value='';};reader.readAsText(file);
+  }
+  function applyImportText(text){
+    try {
+      const parsed=JSON.parse(text);
+      const list=Array.isArray(parsed)?parsed:(Array.isArray(parsed.trips)?parsed.trips:(parsed.trip?[parsed.trip]:[]));
+      const incoming=list.map(normalizeTrip).filter(Boolean).map(t=>({...t,id:id(),updatedAt:Date.now(),stops:t.stops.map(s=>({...s,id:id()}))}));
+      if(!incoming.length)throw new Error('没有计划');
+      if(!confirm(`备份里有 ${incoming.length} 份计划。导入会追加到本机，不会覆盖现有计划。继续吗？`))return;
+      data.trips=[...incoming,...data.trips];persist();render();toast(`已导入 ${incoming.length} 份计划`);
+    } catch(e){alert('无法读取这份 JSON。请粘贴或选择由“家游计划”导出的备份。');}
+  }
+  function openPasteImport(){
+    const fields='<div class="field full"><label for="backupPayload">粘贴小程序或网页导出的备份 JSON</label><textarea id="backupPayload" name="payload" required class="backup-paste" placeholder="在这里粘贴完整的备份文本"></textarea></div>';
+    openModal('粘贴备份 JSON',fields,{type:'import-json'});
+  }
+  document.addEventListener('click',event=>{
+    const target=event.target.closest('[data-action]');if(!target)return;
+    const action=target.dataset.action,idValue=target.dataset.id;
+    if(action==='new-trip')newTrip();
+    else if(action==='home'){activeTripId=null;render();}
+    else if(action==='open-trip'){activeTripId=idValue;render();window.scrollTo({top:0,behavior:'smooth'});}
+    else if(action==='edit-trip')editTrip();
+    else if(action==='add-stop')addStop(target.dataset.day||1);
+    else if(action==='edit-stop')editStop(idValue);
+    else if(action==='delete-stop')deleteStop(idValue);
+    else if(action==='move-stop')moveStop(idValue,target.dataset.dir);
+    else if(action==='copy-trip')duplicateTrip(idValue||activeTripId);
+    else if(action==='delete-trip')deleteTrip(idValue);
+    else if(action==='scroll-day'){document.getElementById(`day-${target.dataset.day}`)?.scrollIntoView({behavior:'smooth',block:'start'});}
+    else if(action==='export')exportData();
+    else if(action==='import')document.getElementById('importFile').click();
+    else if(action==='paste-import')openPasteImport();
+    else if(action==='close-modal')closeModal();
+  });
+  document.getElementById('modalForm').addEventListener('submit',saveModal);
+  document.getElementById('tripSearch').addEventListener('input',renderTripList);
+  document.getElementById('importFile').addEventListener('change',e=>importData(e.target.files?.[0]));
+  document.getElementById('modalBackdrop').addEventListener('click',e=>{if(e.target.id==='modalBackdrop')closeModal();});
+  document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal();});
+  persist();
+  render();
+})();
+</script>
+</body>
+</html>

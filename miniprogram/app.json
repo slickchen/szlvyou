@@ -1,0 +1,15 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/trip/trip"
+  ],
+  "window": {
+    "navigationBarTitleText": "家游计划",
+    "navigationBarBackgroundColor": "#103c43",
+    "navigationBarTextStyle": "white",
+    "backgroundColor": "#f3f7f4",
+    "backgroundTextStyle": "light"
+  },
+  "style": "v2",
+  "sitemapLocation": "sitemap.json"
+}

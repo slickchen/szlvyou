@@ -1,0 +1,55 @@
+<view class="page" wx:if="{{trip}}">
+  <view class="nav-row"><text class="back" bindtap="goBack">‹ 全部计划</text><text class="back" bindtap="editTrip">编辑</text></view>
+  <view class="trip-heading">
+    <text class="detail-title">{{trip.title}}</text>
+    <text class="dest">⌖ {{trip.destination || '目的地待补充'}}</text>
+    <view class="chips"><text class="chip">{{trip.days}} 天 {{trip.nights}} 夜</text><text wx:if="{{trip.startDate}}" class="chip">{{trip.startDate}} 出发</text><text wx:if="{{trip.people}}" class="chip">{{trip.people}}</text><text class="chip">{{trip.stops.length}} 个地点</text></view>
+    <view wx:if="{{trip.budget}}" class="budget"><text>预算参考</text><text class="budget-value">{{trip.budget}}</text></view>
+    <text wx:if="{{trip.budgetNote}}" class="budget-note">{{trip.budgetNote}}</text>
+    <view class="detail-actions"><button class="btn secondary small" bindtap="addStop" data-day="1">＋ 添加地点</button><button class="btn ghost small" bindtap="copyPlan">复制计划 JSON</button><button class="btn ghost small" open-type="share">分享小程序</button></view>
+  </view>
+
+  <view wx:for="{{dayList}}" wx:key="day" class="day-card">
+    <view class="day-head"><view><text class="day-title">第 {{item.day}} 天 <text wx:if="{{item.date}}" class="muted">· {{item.date}}</text></text><text class="section-desc">{{item.stops.length}} 个地点，按顺序游玩</text></view><button class="icon-btn" data-day="{{item.day}}" bindtap="addStop">＋ 添加</button></view>
+    <view wx:if="{{item.stops.length === 0}}" class="day-empty">还没有安排地点，添加景点、酒店、餐饮或交通。</view>
+    <view wx:for="{{item.stops}}" wx:for-item="stop" wx:for-index="stopIndex" wx:key="id" class="stop">
+      <view class="stop-top"><text class="stop-time">{{stop.time || '待定'}}</text><view class="stop-main"><text class="stop-title">{{stop.title}} <text class="stop-type">{{stop.type}}</text></text><text wx:if="{{stop.address}}" class="stop-address">⌖ {{stop.address}}</text><text wx:if="{{stop.note}}" class="stop-note">{{stop.note}}</text></view></view>
+      <view class="stop-actions"><button class="icon-btn" data-id="{{stop.id}}" data-day="{{item.day}}" data-index="{{stopIndex}}" data-dir="-1" bindtap="moveStop" disabled="{{stopIndex === 0}}">↑ 上移</button><button class="icon-btn" data-id="{{stop.id}}" data-day="{{item.day}}" data-index="{{stopIndex}}" data-dir="1" bindtap="moveStop" disabled="{{stopIndex === item.stops.length - 1}}">↓ 下移</button><button class="icon-btn" data-id="{{stop.id}}" bindtap="copyAddress">复制导航</button><button class="icon-btn" data-id="{{stop.id}}" bindtap="editStop">编辑</button><button class="icon-btn" data-id="{{stop.id}}" bindtap="deleteStop">删除</button></view>
+    </view>
+    <button class="btn secondary" style="width:100%;margin-top:12rpx" data-day="{{item.day}}" bindtap="addStop">＋ 添加第 {{item.day}} 天地点</button>
+  </view>
+
+  <view class="day-card reminder-card">
+    <text class="day-title">出行准备与自驾提醒</text>
+    <view class="reminder-group"><text class="reminder-title">出发前</text><text class="reminder-line">• 核对酒店日期、停车和寄存安排，确认门票时段、证件要求与退改规则。</text><text class="reminder-line">• 检查轮胎、胎压、刹车、灯光和雨刮；带好驾驶证、行驶证、充电线、饮水和常用药。</text><text class="reminder-line">• 查看天气和实时路况，提前下载导航；有儿童同行时备好儿童座椅并约定集合点。</text></view>
+    <view class="reminder-group"><text class="reminder-title">途中</text><text class="reminder-line">• 遵守限速和道路通行规定，变道打灯、保持车距；导航由乘客操作。</text><text class="reminder-line">• 约每 2 小时在安全地点休息；司机困倦就停车休息或换人，不赶路。</text><text class="reminder-line">• 停车先确认限高、收费和出口，贵重物品不要留在车内显眼处。</text></view>
+    <view class="reminder-group"><text class="reminder-title">返程</text><text class="reminder-line">• 退房前检查证件、行李、充电器和儿童用品，确认停车费用及车辆状态。</text><text class="reminder-line">• 出发前重新查看路况和天气，留足回程时间；暴雨或疲劳时先休息。</text><text class="reminder-line">• 出发后告诉家人预计到达时间，到家后检查随身物品和行李。</text></view>
+  </view>
+
+  <view class="help">调整每天的地点顺序，添加预约、停车和集合提醒。地点数据保存在本机；复制 JSON 后可以导入到网页或另一台设备。</view>
+
+  <view wx:if="{{modalVisible}}" class="overlay" catchtap="closeModal">
+    <view class="modal" catchtap="stopTap">
+      <view class="modal-head"><text>{{modalType === 'trip' ? '编辑计划信息' : (editingStop ? '编辑旅行地点' : '添加旅行地点')}}</text><text bindtap="closeModal">×</text></view>
+      <block wx:if="{{modalType === 'trip'}}">
+        <view class="field"><text class="label">计划名称 *</text><input class="input" data-field="title" value="{{form.title}}" bindinput="onFieldInput" /></view>
+        <view class="field"><text class="label">目的地 / 路线</text><input class="input" data-field="destination" value="{{form.destination}}" bindinput="onFieldInput" /></view>
+        <view class="field"><text class="label">出发日期</text><picker mode="date" value="{{form.startDate}}" bindchange="onDateChange"><view class="picker">{{form.startDate || '选择日期'}}</view></picker></view>
+        <view class="field"><text class="label">旅行天数</text><input class="input" type="number" data-field="days" value="{{form.days}}" bindinput="onFieldInput" /></view>
+        <view class="field"><text class="label">同行人</text><input class="input" data-field="people" value="{{form.people}}" bindinput="onFieldInput" /></view>
+        <view class="field"><text class="label">预算参考</text><input class="input" data-field="budget" value="{{form.budget}}" bindinput="onFieldInput" /></view>
+        <view class="field"><text class="label">预算拆分备注</text><textarea class="textarea" data-field="budgetNote" value="{{form.budgetNote}}" placeholder="记录酒店、门票、餐饮和交通估算" bindinput="onFieldInput" /></view>
+      </block>
+      <block wx:else>
+        <view class="field"><text class="label">安排在第几天</text><picker range="{{dayOptions}}" value="{{dayIndex}}" bindchange="onDayChange"><view class="picker">第 {{form.day}} 天</view></picker></view>
+        <view class="field"><text class="label">时间</text><picker mode="time" value="{{form.time}}" bindchange="onTimeChange"><view class="picker">{{form.time || '选择时间'}}</view></picker></view>
+        <view class="field"><text class="label">地点 / 安排名称 *</text><input class="input" data-field="title" value="{{form.title}}" placeholder="例如：海边公园、酒店入住" bindinput="onFieldInput" /></view>
+        <view class="field"><text class="label">类型</text><picker range="{{types}}" value="{{typeIndex}}" bindchange="onTypeChange"><view class="picker">{{form.type}}</view></picker></view>
+        <view class="field"><text class="label">地址 / 导航关键词</text><input class="input" data-field="address" value="{{form.address}}" placeholder="填写详细地址更好导航" bindinput="onFieldInput" /></view>
+        <view class="field"><text class="label">备注</text><textarea class="textarea" data-field="note" value="{{form.note}}" placeholder="预约、停车、门票、集合点等提醒" bindinput="onFieldInput" /></view>
+      </block>
+      <view class="modal-actions"><button class="btn ghost" bindtap="closeModal">取消</button><button class="btn" bindtap="saveModal">保存</button></view>
+    </view>
+  </view>
+</view>
+<view wx:else class="page"><view class="empty">找不到这份旅行计划，返回首页再试试。</view><button class="btn" bindtap="goBack">返回计划列表</button></view>

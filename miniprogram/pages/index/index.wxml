@@ -1,0 +1,58 @@
+<view class="page">
+  <view class="hero">
+    <text class="eyebrow">FAMILY TRIP PLANNER</text>
+    <text class="hero-title">把一家人的旅行
+安排得明明白白</text>
+    <text class="hero-desc">每次出行建一份计划，地点按天排好；下次复制旧计划，换城市、改景点就能继续用。</text>
+    <view class="hero-actions">
+      <text class="hero-note">多份行程 · 地点可调整 · 本机保存</text>
+      <button class="btn primary" bindtap="newTrip">＋ 新建计划</button>
+    </view>
+  </view>
+
+  <view class="section-head">
+    <view><text class="section-title">我的旅行计划</text><text class="section-desc">从深圳三天两夜示例开始，也可以新建。</text></view>
+    <text class="count">{{filteredTrips.length}} / {{trips.length}} 份</text>
+  </view>
+  <input class="search" placeholder="搜索计划名称或目的地" value="{{query}}" bindinput="onSearch" />
+
+  <view wx:if="{{filteredTrips.length === 0}}" class="empty">没有匹配的计划。点击“新建计划”开始安排。</view>
+  <view wx:for="{{filteredTrips}}" wx:key="id" class="trip-card">
+    <view class="trip-card-top">
+      <view style="flex:1" data-id="{{item.id}}" bindtap="openTrip">
+        <text class="trip-name">{{item.title}}</text>
+        <text class="meta">{{item.startDate || '日期待定'}} · {{item.days}} 天 {{item.nights}} 夜</text>
+      </view>
+      <button class="icon-btn" data-id="{{item.id}}" catchtap="deleteTrip">删除</button>
+    </view>
+    <text class="dest">⌖ {{item.destination || '还没填写目的地'}}</text>
+    <view class="card-bottom">
+      <text class="muted">{{item.stopCount}} 个行程点 · {{item.people || '同行人待定'}}</text>
+      <view class="button-row">
+        <button class="btn ghost small" data-id="{{item.id}}" catchtap="duplicateTrip">复制复用</button>
+        <button class="btn secondary small" data-id="{{item.id}}" catchtap="openTrip">打开</button>
+      </view>
+    </view>
+  </view>
+
+  <view class="backup-row">
+    <button class="btn secondary small" bindtap="copyBackup">复制备份 JSON</button>
+    <button class="btn ghost small" bindtap="importBackup">从剪贴板导入</button>
+    <button class="btn ghost small" open-type="share">分享小程序</button>
+  </view>
+  <view class="help">行程保存在这台设备。换手机或与家人共享计划时，先复制 JSON，再在另一台设备选择“从剪贴板导入”。也可在网页端导入同一份 JSON。当前版本没有云端自动同步。</view>
+
+  <view wx:if="{{modalVisible}}" class="overlay" catchtap="closeModal">
+    <view class="modal" catchtap="stopTap">
+      <view class="modal-head"><text>新建旅行计划</text><text data-action="close" bindtap="closeModal">×</text></view>
+      <view class="field"><text class="label">计划名称 *</text><input class="input" placeholder="例如：暑假珠海亲子游" data-field="title" value="{{form.title}}" bindinput="onFieldInput" /></view>
+      <view class="field"><text class="label">目的地 / 路线</text><input class="input" placeholder="例如：广州 → 珠海长隆" data-field="destination" value="{{form.destination}}" bindinput="onFieldInput" /></view>
+      <view class="field"><text class="label">出发日期</text><picker mode="date" value="{{form.startDate}}" bindchange="onDateChange"><view class="picker">{{form.startDate || '选择日期'}}</view></picker></view>
+      <view class="field"><text class="label">旅行天数</text><input class="input" type="number" value="{{form.days}}" data-field="days" bindinput="onFieldInput" /></view>
+      <view class="field"><text class="label">同行人</text><input class="input" placeholder="例如：2大1小" value="{{form.people}}" data-field="people" bindinput="onFieldInput" /></view>
+      <view class="field"><text class="label">预算参考</text><input class="input" placeholder="例如：¥6,000 左右" value="{{form.budget}}" data-field="budget" bindinput="onFieldInput" /></view>
+      <view class="field"><text class="label">预算拆分备注（选填）</text><textarea class="textarea" placeholder="可记录酒店、门票、餐饮、交通等估算" value="{{form.budgetNote}}" data-field="budgetNote" bindinput="onFieldInput" /></view>
+      <view class="modal-actions"><button class="btn ghost" bindtap="closeModal">取消</button><button class="btn" bindtap="saveTrip">创建计划</button></view>
+    </view>
+  </view>
+</view>
