@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="144" height="144" viewBox="0 0 144 144">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#103c43"/>
+      <stop offset="1" stop-color="#218d78"/>
+    </linearGradient>
+    <linearGradient id="hill" x1="0" y1="0" x2="0.8" y2="1">
+      <stop offset="0" stop-color="#62c6a4"/>
+      <stop offset="1" stop-color="#237b6b"/>
+    </linearGradient>
+    <clipPath id="round"><rect width="144" height="144" rx="28"/></clipPath>
+  </defs>
+  <g clip-path="url(#round)">
+    <rect width="144" height="144" fill="url(#sky)"/>
+    <circle cx="111" cy="31" r="17" fill="#ffd778"/>
+    <path d="M0 83 25 56l19 20 25-31 26 31 18-17 31 30v55H0Z" fill="#4ba98b" opacity=".62"/>
+    <path d="M0 101c21-16 43-14 62-4 24 12 49 2 82-13v60H0Z" fill="url(#hill)"/>
+    <path d="M18 125c20-14 34-16 51-25 18-10 33-4 52-17" fill="none" stroke="#fff3df" stroke-width="5" stroke-linecap="round" stroke-dasharray="2 8"/>
+    <path d="M18 125c20-14 34-16 51-25 18-10 33-4 52-17" fill="none" stroke="#fff3df" stroke-width="2" stroke-linecap="round" opacity=".5"/>
+    <path d="M105 47c0-9 7-16 16-16s16 7 16 16c0 12-16 29-16 29s-16-17-16-29Z" fill="#ef8065" stroke="#fff3df" stroke-width="3"/>
+    <circle cx="121" cy="47" r="5" fill="#fff3df"/>
+    <ellipse cx="72" cy="117" rx="40" ry="8" fill="#103c43" opacity=".22"/>
+    <path d="M39 103c-2-12 2-21 10-21s13 9 11 21l-2 9H41Z" fill="#ef8065"/>
+    <circle cx="49" cy="72" r="10" fill="#ffd4ad"/>
+    <path d="M39 71c0-9 5-14 11-14 7 0 11 6 10 14-3-3-5-7-6-10-4 5-8 8-15 10Z" fill="#3c3330"/>
+    <path d="M83 105c-2-10 1-18 8-18 8 0 11 8 9 18l-2 7H85Z" fill="#c9f0df"/>
+    <circle cx="91" cy="72" r="10" fill="#f5c69b"/>
+    <path d="M81 70c1-8 5-13 11-13 7 0 11 5 10 13-3-2-6-6-7-9-4 5-8 8-14 9Z" fill="#284c4b"/>
+    <path d="M59 108c-2-10 1-17 7-17 7 0 10 7 8 17l-1 6H60Z" fill="#ffd778"/>
+    <circle cx="66" cy="82" r="8" fill="#f6c89f"/>
+    <path d="M58 80c1-7 4-11 9-11s8 4 8 11c-3-2-5-5-6-7-3 4-6 6-11 7Z" fill="#5b4136"/>
+    <path d="M47 111c6-5 12-6 18-2m18 0c6-4 11-4 17 0" fill="none" stroke="#fff3df" stroke-width="2" stroke-linecap="round" opacity=".8"/>
+    <circle cx="27" cy="37" r="2" fill="#c9f0df" opacity=".8"/>
+    <circle cx="76" cy="27" r="2" fill="#fff3df" opacity=".7"/>
+  </g>
+</svg>
